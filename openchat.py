@@ -21,9 +21,9 @@ def handle_prompt():
     # Add user input to conversation history
     conversation_history.append({"role": "user", "content": input_text})
 
-    # Send chat history to Ollama (make sure the model name matches what you're using)
+    # Send chat history to the OpenChat model (update API endpoint as per OpenChat model specifics)
     response = requests.post(
-        "http://localhost:11434/api/chat",  # Default Ollama API endpoint
+        "http://localhost:11434/api/chat",  # Assuming this is the endpoint for OpenChat model
         json={
             "model": "openchat",  # Specify the openchat model
             "messages": conversation_history  # Send the entire conversation history

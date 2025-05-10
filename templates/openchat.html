@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chatbot</title>
-</head>
-<body>
-    <h1>Chat with our bot!</h1>
-    <form id="chat-form">
-        <input type="text" id="user-input" placeholder="Say something..." required>
-        <button type="submit">Send</button>
-    </form>
-    <div id="chat-container"></div>
+    <meta name="author" content="J.C. Chen">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  </head>
+  <body>
+    <main>
+      <div class="chatbot">
+        <div class="chat-header">
+          <h1>My LLM</h1>
+        </div>
+        <div class="header-sub-text">
+          <p>Copyright © JC 2023 - Created by JC with <a class="purple">❤</a></p>
+        </div>
 
-    <script>
-        document.getElementById("chat-form").addEventListener("submit", async function(event) {
-            event.preventDefault();
-            const userInput = document.getElementById("user-input").value;
-            const response = await fetch("/chatbot", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ prompt: userInput })
-            });
-            const answer = await response.text();
-            const chatContainer = document.getElementById("chat-container");
-            chatContainer.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
-            chatContainer.innerHTML += `<p><strong>Bot:</strong> ${answer}</p>`;
-            document.getElementById("user-input").value = "";  // Clear input field
-        });
-    </script>
-</body>
+        <div class="spacer" id="messages-container"></div>
+
+        <form class="chat-form" id="message-form">
+          <textarea type="text" id="message-input" placeholder="Send a message..."></textarea>
+          <button type="submit">➤</button> 
+        </form>
+      </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
 </html>
