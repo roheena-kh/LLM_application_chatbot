@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chat with our bot!</h1>
+    <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Say something..." required>
+        <button type="submit">Send</button>
+    </form>
+    <div id="chat-container"></div>
+
+    <script>
+        document.getElementById("chat-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const userInput = document.getElementById("user-input").value;
+            const response = await fetch("/chatbot", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ prompt: userInput })
+            });
+            const answer = await response.text();
+            const chatContainer = document.getElementById("chat-container");
+            chatContainer.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+            chatContainer.innerHTML += `<p><strong>Bot:</strong> ${answer}</p>`;
+            document.getElementById("user-input").value = "";  // Clear input field
+        });
+    </script>
+</body>
+</html>
