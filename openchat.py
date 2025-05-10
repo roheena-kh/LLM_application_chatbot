@@ -1,16 +1,16 @@
 from flask import Flask, request, render_template
 from flask_cors import CORS
 import json
-import requests  # We need this to send the request to Ollama
+import requests
 
 app = Flask(__name__)
 CORS(app)
 
 conversation_history = []
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('openchat.html')  # Make sure your HTML file is called openchat.html
 
 @app.route('/chatbot', methods=['POST'])
 def handle_prompt():
@@ -40,4 +40,3 @@ def handle_prompt():
 
 if __name__ == '__main__':
     app.run(debug=True)  # Run the Flask app
-
