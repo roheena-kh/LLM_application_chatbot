@@ -21,22 +21,29 @@ def handle_prompt():
     # Add user input to conversation history
     conversation_history.append({"role": "user", "content": input_text})
 
-    # Send chat history to the OpenChat model (update API endpoint as per OpenChat model specifics)
+    # Send chat history to OpenChat (via Ollama)
     response = requests.post(
-        "http://localhost:11434/api/chat",  # Assuming this is the endpoint for OpenChat model
+        "http://localhost:11434/api/chat",
         json={
-            "model": "openchat",  # Specify the openchat model
-            "messages": conversation_history  # Send the entire conversation history
-        }
+            "model": "openchat:latest",  # Ensure this matches the name of your pulled model
+            "messages": conversation_history
+        },
+        stream=True  # Required for reading streamed response
     )
+    
 
-    response_json = response.json()
-    answer = response_json['message']['content']
+    # Parse streaming response line-by-line
+    answer = ""
+    for line in response.iter_lines():
+        if line:
+            line_data = json.loads(line.decode('utf-8'))
+            if "message" in line_data:
+                answer = line_data["message"]["content"]
 
-    # Append the assistant's response to the conversation history
+    # Add assistant response to history
     conversation_history.append({"role": "assistant", "content": answer})
 
     return answer
 
 if __name__ == '__main__':
-    app.run(debug=True)  # Run the Flask app
+    app.run(debug=True)
